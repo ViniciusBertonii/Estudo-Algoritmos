@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
     "files.autoSave": "afterDelay",
     "editor.autoClosingQuotes": "always"
+=======
+    "editor.autoClosingQuotes": "always",
+    "files.autoSave": "afterDelay"
+>>>>>>> 674cc12e774c818eb3aa9fa1e8870aab9f1f3ea2
 }

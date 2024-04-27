@@ -4,143 +4,198 @@ public class MinhaDLinkedList {
         public int valor;
         public Nodo prox;
         public Nodo prev;
-
-        public Nodo(int v) {
-            valor = v;
-            prev = prox = null;
+        public Nodo(int v){
+            valor=v;
+            prev=prox=null;
         }
     }
 
     private Nodo head, tail;
     private int count;
 
-    public MinhaDLinkedList() {
-        head = tail = null;
-        count = 0;
+    public MinhaDLinkedList(){
+        tail=head=null;
+        count=0;
     }
 
-    public boolean add(int element) {
+    public boolean	add(int element){
         Nodo novo = new Nodo(element);
 
-        if (isEmpty()) {
-            head = tail = novo;
-        } else {
-            tail.prox = novo;
-            novo.prev = tail;
-            tail = novo;
+        if(count==0)
+            head=novo;
+        else{
+            tail.prox=novo;
+            tail.prox.prev=tail;
         }
+        tail=novo;
         count++;
         return true;
     }
 
-    public void add(int index, int element) {
-        // Implementar a adição em uma posição específica (opcional para este exemplo)
+    public void     add(int index, int element){
+        if((index<0)||(index>=count))
+            throw new IndexOutOfBoundsException("Indice invalido");
+
+        Nodo navegador;        
+        //ALTERNATIVA 1 - DO inicio para fim sempre    
+        navegador=head;        
+        while(index>0){
+            navegador=navegador.prox;
+            index--;
+        }
+        Nodo novo = new Nodo(element);
+
+        if(navegador!=head){ // se não for o primeiro elemento
+            novo.prev=navegador.prev;
+            navegador.prev=novo;
+            novo.prox=navegador;
+            novo.prev.prox=novo;
+        }
+        else{
+            novo.prox=head;
+            head.prev=novo;
+            head=novo;
+        }
+
+        count++;
+
     }
 
-    public void clear() {
-        head = tail = null;
-        count = 0;
+    public void	    clear(){
+        tail=head=null;
+        count=0;
     }
 
-    public boolean contains(int element) {
+    public boolean	contains(int element){
         Nodo aux = head;
-        while (aux != null) {
-            if (aux.valor == element)
-                return true;
-            aux = aux.prox;
+        //for(Nodo aux=head; aux!=null; aux=aux.prox){}
+        while (aux!=null){
+            if(aux.valor==element) return true;
+            aux=aux.prox;
         }
         return false;
     }
 
-    public int get(int index) {
-        if (index < 0 || index >= count)
-            throw new IndexOutOfBoundsException();
+    public int 	    get(int index){
+        if((index<0)||(index>=count))
+            throw new IndexOutOfBoundsException("Indice invalido");
 
-        Nodo aux = head;
-        for (int i = 0; i < index; i++) {
-            aux = aux.prox;
+        Nodo navegador;        
+        //ALTERNATIVA 1 - DO inicio para fim sempre    
+        /*
+        navegador=head;        
+        while(index>0){
+            navegador=navegador.prox;
+            index--;
         }
-        return aux.valor;
+        */
+        // ALTERNATIVA 2 - Inicio depende do indice
+        int meio=count/2;
+        if(index<meio){
+            navegador=head;        
+            while(index>0){
+                navegador=navegador.prox;
+                index--;
+            }
+        }
+        else{
+            navegador=tail;
+            int idx=count-index-1;
+            while(idx>0){
+                navegador=navegador.prev;
+                idx--;
+            }
+        }
+        return navegador.valor;
     }
 
-    public int indexOf(int element) {
+    public int	    indexOf(int element){
         Nodo aux = head;
-        int idx = 0;
-        while (aux != null) {
-            if (aux.valor == element)
-                return idx;
-            aux = aux.prox;
+        int idx=0;
+        while (aux!=null){
+            if(aux.valor==element) return idx;
+            aux=aux.prox;
             idx++;
         }
         return -1;
     }
 
-    public boolean isEmpty() {
-        return (count == 0);
+    public boolean	isEmpty(){
+        return (count==0);
     }
 
-    public int remove(int index) {
-        if (index < 0 || index >= count)
-            throw new IndexOutOfBoundsException();
+    public int	    remove(int index){
+        if((index<0)||(index>=count))
+            throw new IndexOutOfBoundsException("Indice invalido");
 
-        Nodo removedNode = null;
-
-        if (count == 1) { // Remoção quando há apenas um elemento na lista
-            removedNode = head;
-            head = tail = null;
-        } else {
-            Nodo aux = head;
-            for (int i = 0; i < index; i++) {
-                aux = aux.prox;
-            }
-
-            removedNode = aux;
-            if (aux == head) {
-                head = aux.prox;
-                head.prev = null;
-            } else if (aux == tail) {
-                tail = aux.prev;
-                tail.prox = null;
-            } else {
-                aux.prev.prox = aux.prox;
-                aux.prox.prev = aux.prev;
-            }
+        Nodo navegador=head;
+        while (index>0) {
+            navegador=navegador.prox;
+            index--;            
         }
+
+        if(navegador!=head)
+            navegador.prev.prox=navegador.prox;
+        else
+            head=navegador.prox;
+
+        if(navegador!=tail)
+            navegador.prox.prev=navegador.prev;
+        else
+            tail=navegador.prev;
+
+        navegador.prox=null;
+        navegador.prev=null;
 
         count--;
-        return removedNode.valor;
+
+        return navegador.valor;
     }
 
-    public int set(int index, int element) {
-        if (index < 0 || index >= count)
-            throw new IndexOutOfBoundsException();
+    public int	    set(int index, int element){
+        if((index<0)||(index>=count))
+            throw new IndexOutOfBoundsException("Indice invalido");
 
-        Nodo aux = head;
-        for (int i = 0; i < index; i++) {
-            aux = aux.prox;
+        Nodo navegador;        
+        //ALTERNATIVA 1 - DO inicio para fim sempre    
+        navegador=head;        
+        while(index>0){
+            navegador=navegador.prox;
+            index--;
         }
-
-        int oldValue = aux.valor;
-        aux.valor = element;
-        return oldValue;
+        int aux=navegador.valor;
+        navegador.valor=element;
+        return aux;
     }
 
-    public int size() {
+    public int	    size(){
         return count;
     }
 
-    public String toString() {
+    public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
-        Nodo current = head;
-        while (current != null) {
-            sb.append(current.valor);
-            if (current != tail) {
-                sb.append(", ");
+        if(! isEmpty()){
+            Nodo navegador = head;
+            while (navegador.prox!=null){
+                sb.append(navegador.valor+", ");
+                navegador=navegador.prox;
             }
-            current = current.prox;
+            sb.append(navegador.valor+"");
+
         }
-        sb.append(" ]");
+        sb.append("]");
         return sb.toString();
+    }  
+
+    public int somaElementosLista(){
+        int soma = 0;
+        Nodo navegador = head;
+        while (navegador != null){
+            soma += navegador.valor;
+            navegador = navegador.prox;
+        }
+        return soma;
     }
+
 }
