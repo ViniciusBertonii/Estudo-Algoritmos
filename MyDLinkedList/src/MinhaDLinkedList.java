@@ -1,3 +1,5 @@
+import java.lang.reflect.InaccessibleObjectException;
+
 public class MinhaDLinkedList {
 
     private class Nodo {
@@ -30,6 +32,31 @@ public class MinhaDLinkedList {
         tail=novo;
         count++;
         return true;
+    }
+
+    public int secondGtr(){
+        
+        if (count<=1) {
+            throw new IndexOutOfBoundsException("lista nao tem a quantidade de itens necessarios");
+        }
+        
+        int greater;
+        int vGreater;
+
+        Nodo navegador=head.prox;
+
+        vGreater= greater=navegador.valor;
+
+        while (navegador!=null) {
+            if (navegador.valor>=greater) {
+                vGreater=greater;
+                greater=navegador.valor;
+            }
+            navegador=navegador.prox;
+        }
+
+        return vGreater;
+
     }
 
     public void     add(int index, int element){
@@ -74,6 +101,37 @@ public class MinhaDLinkedList {
             aux=aux.prox;
         }
         return false;
+    }
+
+    public int isSorted(){
+        if (count<=0) {
+         throw new InaccessibleObjectException("ERRO");
+        }
+
+        return
+    }
+
+    private int sortedAlter01(){
+        int crescente=0;
+        int descrescente=0;
+        Nodo navegador = head;
+
+        for (int i = 0; i <count; i++) {
+            if (navegador.valor<navegador.prox.valor) {
+                crescente++;
+            }else if (navegador.valor>navegador.prox.valor) {
+                descrescente++;
+                navegador=navegador.prox;
+
+            }
+
+            if (crescente==count) {
+                return 1;
+            }else if (descrescente==count) {
+                return -1;
+            }else {
+                return 0;}
+        }
     }
 
     public int 	    get(int index){
