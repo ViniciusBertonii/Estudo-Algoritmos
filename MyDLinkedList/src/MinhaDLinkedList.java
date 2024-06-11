@@ -108,7 +108,7 @@ public class MinhaDLinkedList {
          throw new InaccessibleObjectException("ERRO");
         }
 
-        return
+        return count;
     }
 
     private int sortedAlter01(){
@@ -132,6 +132,7 @@ public class MinhaDLinkedList {
             }else {
                 return 0;}
         }
+        return descrescente;
     }
 
     public int 	    get(int index){
